@@ -10,7 +10,7 @@ model_path = os.path.join(script_dir, "runs", "detect", "train3", "weights", "be
 model = YOLO(model_path)
 
 # Load a test image with a path based on the script's directory
-image_path = os.path.join(script_dir, "plaque1.jpg")
+image_path = os.path.join(script_dir, "plaque4.jpg")
 image = cv2.imread(image_path)
 
 # Check if the image was loaded successfully
@@ -19,6 +19,17 @@ if image is None:
 else:
     # Perform detection
     results = model.predict(source=image_path, save=True)
+    for result in results:
+        print("Caractères détectés :")
+        # Extraire et trier les boîtes englobantes par la coordonnée X
+        sorted_boxes = sorted(zip(result.boxes.xyxy, result.boxes.cls, result.boxes.conf), key=lambda x: x[0][0])  # Tri basé sur x1
+        
+        for box, cls, conf in sorted_boxes:
+            # Extraire les coordonnées, la classe détectée et la confiance
+            x1, y1, x2, y2 = map(int, box)
+            label = model.names[int(cls)]
+            confidence = conf.item()
+            print(f" - {label} avec une confiance de {confidence:.2f}")
 
     # If you want to display the annotated results with OpenCV:
     for result in results:
