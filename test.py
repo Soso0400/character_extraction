@@ -6,7 +6,7 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Load the trained model with a path based on the script's directory
-model_path = os.path.join(script_dir, "runs", "detect", "train", "weights", "best.pt")
+model_path = os.path.join(script_dir, "runs", "detect", "train3", "weights", "best.pt")
 model = YOLO(model_path)
 
 # Load a test image with a path based on the script's directory
